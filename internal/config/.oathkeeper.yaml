@@ -157,6 +157,17 @@ authenticators:
       only:
         - sessionid
 
+  # Configures the hawk authenticator
+  hawk:
+    # Set enabled to true if the authenticator should be enabled and false to disable the authenticator. Defaults to false.
+    enabled: true
+
+    config:
+
+      # Sets the origin to proxy requests to. If the response is a 200 with body `{ "subject": "...", "extra": {} }`
+      # The request will pass the subject through successfully, otherwise it will be marked as unauthorized
+      check_request_url: https://hawk-check-host
+
   # Configures the jwt authenticator
   jwt:
     # Set enabled to true if the authenticator should be enabled and false to disable the authenticator. Defaults to false.

@@ -3,16 +3,18 @@ package authn
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"strings"
+
+	"github.com/pkg/errors"
+	"github.com/tidwall/gjson"
+
 	"github.com/ory/go-convenience/stringsx"
 	"github.com/ory/herodot"
 	"github.com/ory/oathkeeper/driver/configuration"
 	"github.com/ory/oathkeeper/helper"
 	"github.com/ory/oathkeeper/pipeline"
-	"github.com/pkg/errors"
-	"github.com/tidwall/gjson"
-	"io/ioutil"
-	"net/http"
-	"strings"
 )
 
 type AuthenticatorHawkConfiguration struct {
@@ -115,12 +117,12 @@ func forwardRequestToAuthenticator(r *http.Request, checkRequestURL string) (jso
 	}
 
 	values := map[string]string{
-		"method": r.Method,
-		"url": r.URL.RequestURI(),
-		"host": r.URL.Hostname(),
-		"port": port,
+		"method":        r.Method,
+		"url":           r.URL.RequestURI(),
+		"host":          r.URL.Hostname(),
+		"port":          port,
 		"authorization": r.Header.Get("Authorization"),
-		"contentType": r.Header.Get("Content-Type"),
+		"contentType":   r.Header.Get("Content-Type"),
 	}
 
 	jsonValue, _ := json.Marshal(values)

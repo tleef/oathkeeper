@@ -94,6 +94,9 @@ const (
 	// cookie session
 	ViperKeyAuthenticatorCookieSessionIsEnabled = "authenticators.cookie_session.enabled"
 
+	// hawk
+	ViperKeyAuthenticatorHawkIsEnabled = "authenticators.hawk.enabled"
+
 	// jwt
 	ViperKeyAuthenticatorJWTIsEnabled = "authenticators.jwt.enabled"
 

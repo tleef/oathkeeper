@@ -443,6 +443,38 @@
       ],
       "additionalProperties": false
     },
+    "configAuthenticatorsHawk": {
+      "type": "object",
+      "title": "Hawk Authenticator Configuration",
+      "description": "This section is optional when the authenticator is disabled.",
+      "properties": {
+        "check_request_url": {
+          "title": "Request Check URL",
+          "type": "string",
+          "format": "uri",
+          "description": "The origin to proxy requests to. If the response is a 200 with body `{ \"subject\": \"...\", \"extra\": {} }`. The request will pass the subject through successfully, otherwise it will be marked as unauthorized.\n\n>If this authenticator is enabled, this value is required.",
+          "examples": [
+            "https://hawk-check-host"
+          ]
+        },
+        "extra_from": {
+          "title": "Extra JSON Path",
+          "description": "The `extra` field in the ORY Oathkeeper authentication session is set using this JSON Path. Defaults to `extra`, and could be `@this` (for the root element), `foo.bar` (for key foo.bar), or any other valid GJSON path. See [GSJON Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) for reference.",
+          "type": "string",
+          "default": "extra"
+        },
+        "subject_from": {
+          "title": "Subject JSON Path",
+          "description": "The `subject` field in the ORY Oathkeeper authentication session is set using this JSON Path. Defaults to `subject`. See [GSJON Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) for reference.",
+          "type": "string",
+          "default": "subject"
+        }
+      },
+      "required": [
+        "check_request_url"
+      ],
+      "additionalProperties": false
+    },
     "configAuthenticatorsJwt": {
       "type": "object",
       "title": "JWT Authenticator Configuration",
@@ -1217,6 +1249,38 @@
                 },
                 "config": {
                   "$ref": "#/definitions/configAuthenticatorsCookieSession"
+                }
+              },
+              "required": [
+                "config"
+              ]
+            },
+            {
+              "properties": {
+                "enabled": {
+                  "const": false
+                }
+              }
+            }
+          ]
+        },
+        "hawk": {
+          "title": "Hawk",
+          "description": "The `hawk` authenticator.",
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "$ref": "#/definitions/handlerSwitch"
+            }
+          },
+          "oneOf": [
+            {
+              "properties": {
+                "enabled": {
+                  "const": true
+                },
+                "config": {
+                  "$ref": "#/definitions/configAuthenticatorsHawk"
                 }
               },
               "required": [
