@@ -109,7 +109,12 @@ func hawkResponsible(r *http.Request) bool {
 func forwardRequestToAuthenticator(r *http.Request, checkRequestURL string) (json.RawMessage, error) {
 	port := r.URL.Port()
 	if port == "" {
-		if r.URL.Scheme == "https" {
+		scheme := r.Header.Get("X-Forwarded-Proto")
+		if scheme == "" {
+			scheme = r.URL.Scheme
+		}
+
+		if scheme == "https" {
 			port = "443"
 		} else {
 			port = "80"
